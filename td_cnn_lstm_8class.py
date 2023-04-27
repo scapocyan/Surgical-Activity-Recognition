@@ -11,11 +11,6 @@ Original file is located at
 In this notebook, 8 class classification of the surgical video clips is implemented with a TD-CNN-LSTM model.
 """
 
-from google.colab import drive
-
-#mount google drive
-drive.mount('/content/drive')
-
 import numpy as np
 import cv2
 
