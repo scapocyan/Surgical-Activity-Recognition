@@ -123,10 +123,10 @@ epoch = 30
 videos = '/content/drive/MyDrive/BDD/clipped_videos_4class'
 color = True
 skip = False
-nclass = 4
+nclass = 8
 
 vid3d = Videoto3D(img_rows, img_cols, frames)
-nb_classes = 4
+nb_classes = 8
 #return data in x and labels in y
 x, y = loaddata(videos, vid3d, nclass, color, skip)
 
@@ -169,7 +169,7 @@ cmodel.add(TimeDistributed(Flatten()))
 
 cmodel.add(Dropout(0.5))
 cmodel.add(LSTM(512, return_sequences=False, dropout=0.5))
-cmodel.add(Dense(4, activation='softmax'))
+cmodel.add(Dense(8, activation='softmax'))
 cmodel.summary()
 
 #define optimizer and compile the model
@@ -255,14 +255,14 @@ print('Cross Validation Accuracy:' , np.array(scores).mean()*100)
 
 predScorenp = np.array(predScore)
 from sklearn.preprocessing import label_binarize
-rounded_labsBin= label_binarize(rounded_labels, classes=[0,1,2,3]) #classes 8
+rounded_labsBin= label_binarize(rounded_labels, classes=[0,1,2,3,4,5,6,7]) #classes 8
 #print(rounded_labsBin)
 
 from sklearn.metrics import roc_curve,roc_auc_score
 fpr = {}
 tpr = {}
 thresh ={}
-for i in range(0,4):
+for i in range(0,8):
 
   #predProb = predScorenp[:,i]
   auc = roc_auc_score(rounded_labsBin[:,i],predScorenp[:,i]);
@@ -277,10 +277,10 @@ plt.plot(x,y, linestyle='--',color='black');
 plt.plot(fpr[1], tpr[1], linestyle='--',color='green', label='Class 2');
 plt.plot(fpr[2], tpr[2], linestyle='--',color='blue', label='Class 3');
 plt.plot(fpr[3], tpr[3], linestyle='--',color='red', label='Class 4');
-# plt.plot(fpr[4], tpr[4], linestyle='--',color='purple', label='Class 4');
-# plt.plot(fpr[5], tpr[5], linestyle='--',color='brown', label='Class 5');
-# plt.plot(fpr[6], tpr[6], linestyle='--',color='pink', label='Class 6');
-# plt.plot(fpr[7], tpr[7], linestyle='--',color='cyan', label='Class 7');
+plt.plot(fpr[4], tpr[4], linestyle='--',color='purple', label='Class 4');
+plt.plot(fpr[5], tpr[5], linestyle='--',color='brown', label='Class 5');
+plt.plot(fpr[6], tpr[6], linestyle='--',color='pink', label='Class 6');
+plt.plot(fpr[7], tpr[7], linestyle='--',color='cyan', label='Class 7');
 
 
 plt.title('Multiclass ROC curve')
